@@ -1,5 +1,6 @@
+# C and C++ makefile
 # Project name
-NAME=gps
+NAME=
 
 
 # Directories
@@ -126,7 +127,7 @@ else
 	# files for git to track
 	cp Makefile $(NAME)
 
-	@echo Makefile rules > $(NAME)/README.md
+	@echo "Makefile rules" > $(NAME)/README.md
 	@echo >> $(NAME)/README.md
 	@echo "{all: compile project}" >> $(NAME)/README.md
 	@echo "{run: run executable}" >> $(NAME)/README.md
@@ -139,5 +140,9 @@ else
 	@echo "{set \'IN=*filename*\' to feed a file to the program}" >> $(NAME)/README.md
 	@echo "{set \'OUT=*filename*\' to write program output to designed file}" >> $(NAME)/README.md
 	@echo "{use \'CFLAGS+=*flags*\' to add *flags*}" >> $(NAME)/README.md
+	@echo >> $(NAME)/README.md
+	@echo "{set \'CC=*compiler*\' to change compiler}" >> $(NAME)/README.md
+	@echo "{set \'NAME=*name*\' to set project name}" >> $(NAME)/README.md
+	@echo "{use \'USER_LIBS=*libraries*\' to set user-defined libraries}" >> $(NAME)/README.md
 
 endif
