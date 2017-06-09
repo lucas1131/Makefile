@@ -104,6 +104,10 @@ zip: checkname clean cleanobj
 	@zip -r $(NAME).zip *
 	@echo Done.
 
+.PHONY: git-show
+git-show:
+	git log --graph --full-history --all --pretty=format:"%h%x09%d%x20%s"
+
 sense:
 	$(error Doesnt make sense)
 
