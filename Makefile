@@ -102,31 +102,10 @@ sense:
 	$(error Doesnt make sense)
 
 update:
-	@echo TODO...
+	@git clone git@github.com:lucas1131/Makefile.git
 
-# Check for directory existence and create them if necessary
-checkdirs:
-	if [ ! -d $(BLDDIR)/ ]; then mkdir -p $(BLDDIR)/; fi
-	if [ ! -d $(INCDIR)/ ]; then mkdir -p $(INCDIR)/; fi
-	if [ ! -d $(LIBDIR)/ ]; then mkdir -p $(LIBDIR)/; fi
-	if [ ! -d $(SRCDIR)/ ]; then mkdir -p $(SRCDIR)/; fi
-	if [ ! -d $(OBJDIR)/ ]; then mkdir -p $(OBJDIR)/; fi
-
-create:
-# Check if project has a name before creating it
-ifeq ($(strip $(NAME)),)
-	$(error No project name provided (open this make and set NAME))
-else
-	mkdir $(NAME) 
-	mkdir $(NAME)/$(SRCDIR)
-	mkdir $(NAME)/$(INCDIR)
-	# mkdir $(NAME)/$(LIBDIR)
-	mkdir $(NAME)/$(BLDDIR)
-	mkdir $(NAME)/$(OBJDIR)
-
-	# files for git to track
-	cp Makefile $(NAME)
-
+.PHONY: readme
+readme:
 	@echo "Makefile rules" > $(NAME)/README.md
 	@echo >> $(NAME)/README.md
 	@echo "{all: compile project}" >> $(NAME)/README.md
@@ -144,5 +123,28 @@ else
 	@echo "{set \'CC=*compiler*\' to change compiler}" >> $(NAME)/README.md
 	@echo "{set \'NAME=*name*\' to set project name}" >> $(NAME)/README.md
 	@echo "{use \'USER_LIBS=*libraries*\' to set user-defined libraries}" >> $(NAME)/README.md
+
+# Check for directory existence and create them if necessary
+checkdirs:
+	if [ ! -d $(BLDDIR)/ ]; then mkdir -p $(BLDDIR)/; fi
+	if [ ! -d $(INCDIR)/ ]; then mkdir -p $(INCDIR)/; fi
+	if [ ! -d $(LIBDIR)/ ]; then mkdir -p $(LIBDIR)/; fi
+	if [ ! -d $(SRCDIR)/ ]; then mkdir -p $(SRCDIR)/; fi
+	if [ ! -d $(OBJDIR)/ ]; then mkdir -p $(OBJDIR)/; fi
+
+create: update
+# Check if project has a name before creating it
+ifeq ($(strip $(NAME)),)
+	$(error No project name provided (open this make and set NAME))
+else
+	mkdir $(NAME) 
+	mkdir $(NAME)/$(SRCDIR)
+	mkdir $(NAME)/$(INCDIR)
+	# mkdir $(NAME)/$(LIBDIR)
+	mkdir $(NAME)/$(BLDDIR)
+	mkdir $(NAME)/$(OBJDIR)
+
+	cp Makefile/Makefile $(NAME)/
+	-rm -rf Makefile/
 
 endif
