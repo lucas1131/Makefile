@@ -98,7 +98,7 @@ zip: checkname clean cleanobj
 	@zip -r $(NAME).zip *
 	@echo Done.
 
-sense: checkname
+sense:
 	$(error Doesnt make sense)
 
 update: checkname
@@ -132,6 +132,7 @@ checkdirs: checkname
 	if [ ! -d $(SRCDIR)/ ]; then mkdir -p $(SRCDIR)/; fi
 	if [ ! -d $(OBJDIR)/ ]; then mkdir -p $(OBJDIR)/; fi
 
+# Check if project has a name
 checkname: 
 ifeq ($(strip $(NAME)),)
 	$(error No project name provided (open this make and set NAME))
@@ -140,7 +141,6 @@ else
 endif
 
 create: checkname update
-# Check if project has a name before creating it
 	mkdir $(NAME) 
 	mkdir $(NAME)/$(SRCDIR)
 	mkdir $(NAME)/$(INCDIR)
