@@ -10,7 +10,6 @@ BLDDIR=build
 SRCDIR=src
 OBJDIR=$(SRCDIR)/obj
 
-
 # If the first argument is "run"
 ifeq (run, $(firstword $(MAKECMDGOALS)))
   # use the rest as arguments for "run"
@@ -51,6 +50,8 @@ ifdef debug
 	CFLAGS += -Wall -Wextra -g -D DEBUG
 	DEBUGGER=valgrind $(DBGFLAGS) 
 endif
+
+GIT_STAT:=$(shell echo -e "GET http://github.com HTTP/1.0\n\n" | nc google.com 80 > /dev/null 2>&1; echo $$?)
 
 all: checkname checkdirs clean main
 
@@ -101,9 +102,6 @@ zip: checkname clean cleanobj
 sense:
 	$(error Doesnt make sense)
 
-update: checkname
-	@git clone git@github.com:lucas1131/Makefile.git
-
 .PHONY: readme
 readme: checkname
 	@echo "# Makefile" >> $(NAME)/README.md
@@ -145,14 +143,21 @@ else
 	@echo
 endif
 
-create: checkname update
-	mkdir $(NAME) 
-	mkdir $(NAME)/$(SRCDIR)
-	mkdir $(NAME)/$(INCDIR)
-	# mkdir $(NAME)/$(LIBDIR)
-	mkdir $(NAME)/$(BLDDIR)
-	mkdir $(NAME)/$(OBJDIR)
+create: checkname
+	@mkdir $(NAME) 
+	@mkdir $(NAME)/$(SRCDIR)
+	@mkdir $(NAME)/$(INCDIR)
+	@# mkdir $(NAME)/$(LIBDIR)
+	@mkdir $(NAME)/$(BLDDIR)
+	@mkdir $(NAME)/$(OBJDIR)
 
-	cp Makefile/Makefile $(NAME)/
-	cp Makefile/README.md $(NAME)/
-	-rm -rf Makefile/
+# If git clone failed
+ifeq ($(GIT_STAT), 0)
+	@git clone git@github.com:lucas1131/MakefileGit.git
+	cp MakefileGit/Makefile $(NAME)/
+	cp MakefileGit/README.md $(NAME)/
+	-rm -rf MakefileGit/
+else
+	cp ./Makefile $(NAME)/
+	$(MAKE) readme
+endif
