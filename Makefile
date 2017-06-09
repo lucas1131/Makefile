@@ -52,7 +52,7 @@ ifdef debug
 	DEBUGGER=valgrind $(DBGFLAGS) 
 endif
 
-all: checkdirs clean main
+all: checkname checkdirs clean main
 
 # Compile directives
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(DEPS)
@@ -63,49 +63,49 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(DEPS)
 	@echo Building $*
 	@$(CC) -c -o $@ $< $(CFLAGS)
 
-main: $(OBJ)
+main: checkname $(OBJ)
 	@echo Linking object files
 	@$(CC) -o $(BLDDIR)/$(NAME) $^ $(CFLAGS) $(LIBS)
 
 
 .PHONY: run
 # Run directives
-run:
+run: checkname
 	$(DEBUGGER) ./$(BLDDIR)/$(NAME) $(RUN_ARGS)
 
 # Utility directives
-clean:
+clean: checkname
 	-rm -f $(BLDDIR)/*
 	-rm -f $(NAME).zip
 	-rm -f $(NAME).tar.gz
 	clear
 	clear
 
-cleanobj:
+cleanobj: checkname
 	-rm -f $(OBJDIR)/*.o
 
-list:
+list: checkname
 	clear
 	ls -lhR
 
-tar: clean cleanobj
+tar: checkname clean cleanobj
 	@echo Compressing files...
 	@tar -zcvf $(NAME).tar.gz *
 	@echo Done.
 
-zip: clean cleanobj
+zip: checkname clean cleanobj
 	@echo Compressing files...
 	@zip -r $(NAME).zip *
 	@echo Done.
 
-sense:
+sense: checkname
 	$(error Doesnt make sense)
 
-update:
+update: checkname
 	@git clone git@github.com:lucas1131/Makefile.git
 
 .PHONY: readme
-readme:
+readme: checkname
 	@echo "Makefile rules" > $(NAME)/README.md
 	@echo >> $(NAME)/README.md
 	@echo "{all: compile project}" >> $(NAME)/README.md
@@ -125,14 +125,14 @@ readme:
 	@echo "{use \'USER_LIBS=*libraries*\' to set user-defined libraries}" >> $(NAME)/README.md
 
 # Check for directory existence and create them if necessary
-checkdirs:
+checkdirs: checkname
 	if [ ! -d $(BLDDIR)/ ]; then mkdir -p $(BLDDIR)/; fi
 	if [ ! -d $(INCDIR)/ ]; then mkdir -p $(INCDIR)/; fi
 	if [ ! -d $(LIBDIR)/ ]; then mkdir -p $(LIBDIR)/; fi
 	if [ ! -d $(SRCDIR)/ ]; then mkdir -p $(SRCDIR)/; fi
 	if [ ! -d $(OBJDIR)/ ]; then mkdir -p $(OBJDIR)/; fi
 
-checkname:
+checkname: 
 ifeq ($(strip $(NAME)),)
 	$(error No project name provided (open this make and set NAME))
 else
