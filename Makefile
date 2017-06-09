@@ -64,6 +64,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(DEPS)
 	@echo Building $*
 	@$(CC) -c -o $@ $< $(CFLAGS)
 
+.PHONY: main
 main: checkname $(OBJ)
 	@echo Linking object files
 	@$(CC) -o $(BLDDIR)/$(NAME) $^ $(CFLAGS) $(LIBS)
@@ -75,6 +76,7 @@ run: checkname
 	$(DEBUGGER) ./$(BLDDIR)/$(NAME) $(RUN_ARGS)
 
 # Utility directives
+.PHONY: clean
 clean: checkname
 	-rm -f $(BLDDIR)/*
 	-rm -f $(NAME).zip
@@ -85,15 +87,18 @@ clean: checkname
 cleanobj: checkname
 	-rm -f $(OBJDIR)/*.o
 
+.PHONY: list
 list: checkname
 	clear
 	ls -lhR
 
+.PHONY: tar
 tar: checkname clean cleanobj
 	@echo Compressing files...
 	@tar -zcvf $(NAME).tar.gz *
 	@echo Done.
 
+.PHONY: zip
 zip: checkname clean cleanobj
 	@echo Compressing files...
 	@zip -r $(NAME).zip *
@@ -144,20 +149,25 @@ else
 endif
 
 create: checkname
+	@echo Creating directories...
 	@mkdir $(NAME) 
 	@mkdir $(NAME)/$(SRCDIR)
 	@mkdir $(NAME)/$(INCDIR)
-	@# mkdir $(NAME)/$(LIBDIR)
+# mkdir $(NAME)/$(LIBDIR)
 	@mkdir $(NAME)/$(BLDDIR)
 	@mkdir $(NAME)/$(OBJDIR)
 
 # If git clone failed
 ifeq ($(GIT_STAT), 0)
-	@git clone git@github.com:lucas1131/MakefileGit.git
-	cp MakefileGit/Makefile $(NAME)/
-	cp MakefileGit/README.md $(NAME)/
-	-rm -rf MakefileGit/
+	@echo Updating Makefile...
+	@git clone git@github.com:lucas1131/MakefileGit.git &> /dev/null
+	@cp MakefileGit/Makefile $(NAME)/
+	@echo Generating README...
+	@cp MakefileGit/README.md $(NAME)/
+	@-rm -rf MakefileGit/
 else
+	@echo Could not update Makefile, copying this instead.
 	cp ./Makefile $(NAME)/
+	@echo Generating README...
 	$(MAKE) readme
 endif
