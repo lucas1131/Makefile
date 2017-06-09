@@ -132,11 +132,15 @@ checkdirs:
 	if [ ! -d $(SRCDIR)/ ]; then mkdir -p $(SRCDIR)/; fi
 	if [ ! -d $(OBJDIR)/ ]; then mkdir -p $(OBJDIR)/; fi
 
-create: update
-# Check if project has a name before creating it
+checkname:
 ifeq ($(strip $(NAME)),)
 	$(error No project name provided (open this make and set NAME))
 else
+	@echo
+endif
+
+create: checkname update
+# Check if project has a name before creating it
 	mkdir $(NAME) 
 	mkdir $(NAME)/$(SRCDIR)
 	mkdir $(NAME)/$(INCDIR)
@@ -146,5 +150,3 @@ else
 
 	cp Makefile/Makefile $(NAME)/
 	-rm -rf Makefile/
-
-endif
