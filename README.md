@@ -12,11 +12,11 @@ create: create project structure
 ```
 
 
-```Set \'debug=1\' to compile/run in debug mode
-Set \'IN=*filename*\' to feed a file to the program
-Set \'OUT=*filename*\' to write program output to designed file
-Use \'CFLAGS+=*flags*\' to add *flags
+```Set _debug=1_ to compile/run in debug mode
+Set _IN=*filename*_ to feed a file to the program
+Set _OUT=*filename*_ to write program output to designed file
+Use _CFLAGS+=*flags*_ to add *flags
 
-Set \'CC=*compiler*\' to change compiler
-Set \'NAME=*name*\' to set project name
-Set \'USER_LIBS=*libraries*\' to set user-defined libraries```
+Set _CC=*compiler*_ to change compiler
+Set _NAME=*name*_ to set project name
+Set _USER_LIBS=*libraries*_ to set user-defined libraries```
