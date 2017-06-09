@@ -106,23 +106,28 @@ update: checkname
 
 .PHONY: readme
 readme: checkname
-	@echo "Makefile rules" > $(NAME)/README.md
-	@echo >> $(NAME)/README.md
-	@echo "{all: compile project}" >> $(NAME)/README.md
-	@echo "{run: run executable}" >> $(NAME)/README.md
-	@echo "{clean: clean object files and zip/tar}" >> $(NAME)/README.md
-	@echo "{zip/tar: compress project folder}" >> $(NAME)/README.md
-	@echo >> $(NAME)/README.md
-	@echo "{======================}" >> $(NAME)/README.md
-	@echo >> $(NAME)/README.md
-	@echo "{set \'debug=1\' to compile/run in debug mode}" >> $(NAME)/README.md
-	@echo "{set \'IN=*filename*\' to feed a file to the program}" >> $(NAME)/README.md
-	@echo "{set \'OUT=*filename*\' to write program output to designed file}" >> $(NAME)/README.md
-	@echo "{use \'CFLAGS+=*flags*\' to add *flags*}" >> $(NAME)/README.md
-	@echo >> $(NAME)/README.md
-	@echo "{set \'CC=*compiler*\' to change compiler}" >> $(NAME)/README.md
-	@echo "{set \'NAME=*name*\' to set project name}" >> $(NAME)/README.md
-	@echo "{use \'USER_LIBS=*libraries*\' to set user-defined libraries}" >> $(NAME)/README.md
+	@echo "# Makefile" >> $(NAME)/README.md
+	@echo "" >> $(NAME)/README.md
+	@echo "\`\`\`Makefile" >> $(NAME)/README.md
+	@echo "all: compile project" >> $(NAME)/README.md
+	@echo "run: run executable" >> $(NAME)/README.md
+	@echo "clean: clean object files and zip/tar" >> $(NAME)/README.md
+	@echo "list: list all project's directories and files" >> $(NAME)/README.md
+	@echo "zip/tar: compress project folder" >> $(NAME)/README.md
+	@echo "update: update makefile" >> $(NAME)/README.md
+	@echo "readme: generate this readme" >> $(NAME)/README.md
+	@echo "create: create project structure" >> $(NAME)/README.md
+	@echo "\`\`\`" >> $(NAME)/README.md
+	@echo "" >> $(NAME)/README.md
+	@echo "" >> $(NAME)/README.md
+	@echo "Set \`debug=1\` to compile/run in debug mode  " >> $(NAME)/README.md
+	@echo "Set \`IN=filename\` to feed a file to the program  " >> $(NAME)/README.md
+	@echo "Set \`OUT=filename\` to write program output to designed file  " >> $(NAME)/README.md
+	@echo "Use \`CFLAGS+=flags\` to add compiler flags  " >> $(NAME)/README.md
+	@echo "Set \`CC=compiler\` to change compiler  " >> $(NAME)/README.md
+	@echo "Set \`NAME=name\` to set project name  " >> $(NAME)/README.md
+	@echo "Set \`USER_LIBS=libraries\` to set user-defined libraries  " >> $(NAME)/README.md
+	@echo "" >> $(NAME)/README.md
 
 # Check for directory existence and create them if necessary
 checkdirs: checkname
@@ -149,4 +154,5 @@ create: checkname update
 	mkdir $(NAME)/$(OBJDIR)
 
 	cp Makefile/Makefile $(NAME)/
+	cp Makefile/README.md $(NAME)/
 	-rm -rf Makefile/
