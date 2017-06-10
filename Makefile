@@ -152,6 +152,13 @@ else
 	@echo
 endif
 
+.PHONY: update
+update:
+	@echo Updating Makefile...
+	git clone git@github.com:lucas1131/MakefileGit.git
+	cp MakefileGit/Makefile .
+	-rm -rf MakefileGit/
+
 create: checkname
 	@echo Creating directories...
 	@mkdir $(NAME) 
