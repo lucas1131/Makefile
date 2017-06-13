@@ -79,6 +79,7 @@ run: checkname
 .PHONY: clean
 clean: checkname
 	-rm -f $(BLDDIR)/*
+	-rm -f vgcore*
 	-rm -f $(NAME).zip
 	-rm -f $(NAME).tar.gz
 	clear
