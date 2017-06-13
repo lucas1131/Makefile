@@ -65,14 +65,14 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(DEPS)
 	@$(CC) -c -o $@ $< $(CFLAGS)
 
 .PHONY: main
-main: checkname $(OBJ)
+main: $(OBJ)
 	@echo Linking object files
 	@$(CC) -o $(BLDDIR)/$(NAME) $^ $(CFLAGS) $(LIBS)
 
 
 .PHONY: run
 # Run directives
-run: checkname
+run:
 	$(DEBUGGER) ./$(BLDDIR)/$(NAME) $(RUN_ARGS)
 
 # Utility directives
@@ -85,11 +85,11 @@ clean: checkname
 	clear
 	clear
 
-cleanobj: checkname
+cleanobj: 
 	-rm -f $(OBJDIR)/*.o
 
 .PHONY: list
-list: checkname
+list: 
 	clear
 	ls -lhR
 
@@ -138,7 +138,7 @@ readme: checkname
 	@echo "" >> $(NAME)/README.md
 
 # Check for directory existence and create them if necessary
-checkdirs: checkname
+checkdirs: 
 	if [ ! -d $(BLDDIR)/ ]; then mkdir -p $(BLDDIR)/; fi
 	if [ ! -d $(INCDIR)/ ]; then mkdir -p $(INCDIR)/; fi
 	if [ ! -d $(LIBDIR)/ ]; then mkdir -p $(LIBDIR)/; fi
