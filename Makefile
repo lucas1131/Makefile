@@ -1,14 +1,14 @@
 # C and C++ makefile
 # Project name
-NAME=
+NAME:=
 
 
 # Directories
-INCDIR=include
-# LIBDIR=lib
-BLDDIR=build
-SRCDIR=src
-OBJDIR=$(SRCDIR)/obj
+INCDIR:=include
+# LIBDIR:=lib
+BLDDIR:=build
+SRCDIR:=src
+OBJDIR:=$(SRCDIR)/obj
 
 # If the first argument is "run"
 ifeq (run, $(firstword $(MAKECMDGOALS)))
@@ -34,15 +34,15 @@ DEPSPP=$(wildcard $(INCDIR)/*.hpp)
 OBJ=$(foreach file, $(SRC), $(file:$(SRCDIR)/%.c=$(OBJDIR)/%.o))
 OBJ += $(foreach file, $(SRCPP), $(file:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o))
 
-# Find renamed or removed .o files
-DEL_OBJ=$(wildcard $(OBJDIR)/*.o)
-DEL_OBJ=$(filter-out %.o, $(OBJC))
+# TODO: Find renamed or removed .o files
+# DEL_OBJ=$(wildcard $(OBJDIR)/*.o)
+# DEL_OBJ=$(filter-out %.o, $(OBJC))
 
-CC=g++
-CFLAGS=-O3 -I./$(INCDIR) 
+CC:=gcc
+CFLAGS:=-O3 -I./$(INCDIR) 
 
-USER_LIBS=
-DEFAULT_LIBS=-lm
+USER_LIBS:=
+DEFAULT_LIBS:=-lm
 LIBS=$(USER_LIBS) $(DEFAULT_LIBS)
 
 
@@ -51,7 +51,6 @@ ifdef debug
 	DEBUGGER=valgrind $(DBGFLAGS) 
 endif
 
-GIT_STAT:=$(shell echo -e "GET http://github.com HTTP/1.0\n\n" | nc google.com 80 > /dev/null 2>&1; echo $$?)
 
 all: checkname checkdirs clean main
 
@@ -82,8 +81,9 @@ clean: checkname
 	-rm -f vgcore*
 	-rm -f $(NAME).zip
 	-rm -f $(NAME).tar.gz
+ifdef TERM
 	clear
-	clear
+endif
 
 cleanobj: 
 	-rm -f $(OBJDIR)/*.o
@@ -169,17 +169,7 @@ create: checkname
 	@mkdir $(NAME)/$(BLDDIR)
 	@mkdir $(NAME)/$(OBJDIR)
 
-# If git clone failed
-ifeq ($(GIT_STAT), 0)
-	@echo Updating Makefile...
-	@git clone git@github.com:lucas1131/MakefileGit.git &> /dev/null
-	@cp MakefileGit/Makefile $(NAME)/
-	@echo Generating README...
-	@cp MakefileGit/README.md $(NAME)/
-	@-rm -rf MakefileGit/
-else
 	@echo Could not update Makefile, copying this instead.
 	cp ./Makefile $(NAME)/
 	@echo Generating README...
 	$(MAKE) readme
-endif
