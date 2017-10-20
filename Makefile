@@ -39,7 +39,7 @@ OBJ += $(foreach file, $(SRCPP), $(file:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o))
 # DEL_OBJ=$(filter-out %.o, $(OBJC))
 
 CC:=gcc
-CFLAGS:=-O3 -I./$(INCDIR) 
+CFLAGS:=-O3 -I./$(INCDIR) -fopenmp
 
 USER_LIBS:=
 DEFAULT_LIBS:=-lm
@@ -49,10 +49,12 @@ LIBS=$(USER_LIBS) $(DEFAULT_LIBS)
 ifdef debug
 	CFLAGS += -Wall -Wextra -g -D DEBUG
 	DEBUGGER=valgrind $(DBGFLAGS) 
-endif
 
-
+all: checkname checkdirs clean cleanobj main
+	
+else
 all: checkname checkdirs clean main
+endif
 
 # Compile directives
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(DEPS)
@@ -81,6 +83,10 @@ clean: checkname
 	-rm -f vgcore*
 	-rm -f $(NAME).zip
 	-rm -f $(NAME).tar.gz
+ifdef debug
+	$(MAKE) cleanobj
+endif
+
 ifdef TERM
 	clear
 endif
